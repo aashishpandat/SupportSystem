@@ -4,6 +4,17 @@ A simple backend application for managing customer support tickets.
 
 I built this project using Flask and MySQL as part of my ShadowFox Backend Developer task. The main focus was on creating REST APIs, connecting the application with a database, validating user input, and handling common API errors.
 
+## Live API
+
+https://supportsystem-production-7af0.up.railway.app/api/health
+
+The API is deployed on Railway and can be tested using the live endpoints below.
+
+### Live API Endpoints
+
+- Health Check: `https://supportsystem-production-7af0.up.railway.app/api/health`
+- Get All Tickets: `https://supportsystem-production-7af0.up.railway.app/api/tickets`
+
 ## What it can do
 
 - Create a support ticket
@@ -60,8 +71,8 @@ I built this project using Flask and MySQL as part of my ShadowFox Backend Devel
 
 ## Project Structure
 
+```text
 SupportSystem/
-│
 ├── app/
 │   ├── models/
 │   │   └── ticket.py
@@ -69,14 +80,28 @@ SupportSystem/
 │   │   └── ticket_routes.py
 │   ├── extensions.py
 │   └── __init__.py
-│
 ├── .gitignore
-├── run.py
-└── README.md
+├── README.md
+├── requirements.txt
+└── run.py
+```
 
 ## Testing
 
-I tested the APIs using Postman, including normal requests as well as invalid email, priority, status and missing-field cases.
+The APIs were tested using Postman with both successful and invalid requests.
+
+Test cases included:
+
+- Creating and retrieving tickets
+- Updating ticket details
+- Updating ticket status
+- Deleting tickets
+- Invalid email
+- Missing required fields
+- Invalid priority
+- Invalid status
+- Invalid ticket ID
+- Invalid routes and HTTP methods
 
 ## Running the project
 
@@ -88,6 +113,10 @@ Set the database details in the `.env` file and then run:
 
 python run.py
 
-The API will be available at:
+The API will be available locally at:
 
 http://127.0.0.1:5000
+
+For the deployed version, use:
+
+https://supportsystem-production-7af0.up.railway.app/api/health
