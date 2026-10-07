@@ -60,5 +60,12 @@ def create_app():
             "message": "Support System API is running",
             "status": "healthy"
         }, 200
+    
+    @app.route("/", methods=["GET"])
+    def home():
+        return {
+            "success": True,
+            "message": "Support System API is running"
+        }, 200
 
     return app
