@@ -184,4 +184,4 @@ Import or create requests for the endpoints listed above. Test successful reques
 **Aashish Jha**
 
 - GitHub: https://github.com/aashishpandat
-- LinkedIn: https://www.linkedin.com/in/aashish-jha/
+- LinkedIn: https://www.linkedin.com/in/aashish-jha-62a77843b
