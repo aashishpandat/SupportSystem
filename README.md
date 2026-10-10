@@ -1,75 +1,85 @@
 # Support Ticket Management System
 
-A simple backend application for managing customer support tickets.
+A RESTful backend API for managing customer support tickets, built with Flask and MySQL.
 
-I built this project using Flask and MySQL as part of my ShadowFox Backend Developer task. The main focus was on creating REST APIs, connecting the application with a database, validating user input, and handling common API errors.
+Developed as part of the ShadowFox Backend Developer task, this project focuses on clean architecture, input validation, database operations, and reliable API responses.
 
-## Live API
+## Live Demo
 
+**Health Check:**  
 https://supportsystem-production-7af0.up.railway.app/api/health
 
-The API is deployed on Railway and can be tested using the live endpoints below.
+**Get All Tickets:**  
+https://supportsystem-production-7af0.up.railway.app/api/tickets
 
-### Live API Endpoints
+The deployed API can be tested using Postman or another HTTP client.
 
-- Health Check: `https://supportsystem-production-7af0.up.railway.app/api/health`
-- Get All Tickets: `https://supportsystem-production-7af0.up.railway.app/api/tickets`
+## Features
 
-## What it can do
-
-- Create a support ticket
-- View all tickets
-- View a ticket using its ID
-- Update ticket status
+- Create and retrieve support tickets
+- Retrieve an individual ticket by ID
 - Update ticket details
-- Delete a ticket
-- Validate email, priority and status
-- Handle invalid requests and missing data
+- Change ticket status
+- Delete tickets
+- Validate required fields, email addresses, priorities, and statuses
+- Handle invalid input, missing tickets, and database errors
+- Automated unit and API tests using pytest
 
-## Technologies Used
+## Tech Stack
 
-- Python
-- Flask
-- MySQL
-- Flask-SQLAlchemy
-- PyMySQL
-- Postman
+- **Language:** Python
+- **Framework:** Flask
+- **Database:** MySQL
+- **ORM:** Flask-SQLAlchemy
+- **Database Driver:** PyMySQL
+- **Testing:** pytest
+- **API Testing:** Postman
+- **Deployment:** Railway
 
-## API Routes
+## API Endpoints
 
-| Method | Route | What it does |
+| Method | Endpoint | Description |
 |---|---|---|
-| GET | `/api/health` | Checks if the API is running |
-| POST | `/api/tickets` | Creates a ticket |
-| GET | `/api/tickets` | Shows all tickets |
-| GET | `/api/tickets/<id>` | Shows one ticket |
-| PATCH | `/api/tickets/<id>/status` | Changes ticket status |
-| PUT | `/api/tickets/<id>` | Updates ticket details |
-| DELETE | `/api/tickets/<id>` | Deletes a ticket |
+| GET | `/api/health` | Check API health |
+| POST | `/api/tickets` | Create a ticket |
+| GET | `/api/tickets` | Retrieve all tickets |
+| GET | `/api/tickets/<ticket_id>` | Retrieve a ticket by ID |
+| PUT | `/api/tickets/<ticket_id>` | Update ticket details |
+| PATCH | `/api/tickets/<ticket_id>/status` | Update ticket status |
+| DELETE | `/api/tickets/<ticket_id>` | Delete a ticket |
 
-## Ticket Status
+### Ticket Fields
 
-- Open
-- In Progress
-- Closed
+| Field | Description |
+|---|---|
+| `customer_name` | Customer's name |
+| `email` | Customer's email address |
+| `subject` | Ticket subject |
+| `description` | Details of the issue |
+| `priority` | `Low`, `Medium`, or `High` |
+| `status` | `Open`, `In Progress`, or `Closed` |
 
-## Priority
+New tickets default to `Medium` priority and `Open` status, unless configured otherwise by the application.
 
-- Low
-- Medium
-- High
+## Example Request
 
-## Example
+Create a ticket using `POST /api/tickets` with the following JSON body:
 
+```json
 {
   "customer_name": "Aashish",
   "email": "aashish@example.com",
   "subject": "Login issue",
-  "description": "Unable to login to my account",
+  "description": "Unable to log in to my account",
   "priority": "High"
 }
+```
 
-## Project Structure
+A successful request returns HTTP `201 Created`, along with the created ticket and a success message.
+
+## Project Architecture
+
+The application separates HTTP handling, validation, business logic, and database operations into dedicated layers.
 
 ```text
 SupportSystem/
@@ -78,45 +88,100 @@ SupportSystem/
 │   │   └── ticket.py
 │   ├── routes/
 │   │   └── ticket_routes.py
+│   ├── validation/
+│   │   └── ticket_validator.py
+│   ├── services/
+│   │   └── ticket_service.py
+│   ├── repositories/
+│   │   └── ticket_repository.py
 │   ├── extensions.py
 │   └── __init__.py
+├── tests/
+│   ├── test_ticket_routes.py
+│   ├── test_ticket_service.py
+│   └── test_ticket_validator.py
 ├── .gitignore
-├── README.md
 ├── requirements.txt
+├── README.md
 └── run.py
 ```
 
-## Testing
+### Layer Responsibilities
 
-The APIs were tested using Postman with both successful and invalid requests.
+- **Routes / Controllers:** Handle HTTP requests and return JSON responses.
+- **Validation:** Check request data and enforce allowed values.
+- **Service:** Coordinate business logic and application operations.
+- **Repository:** Handle database queries and persistence.
+- **Models:** Define the ticket database structure.
+- **Tests:** Verify validation, service behavior, and API endpoints.
 
-Test cases included:
+## Getting Started
 
-- Creating and retrieving tickets
-- Updating ticket details
-- Updating ticket status
-- Deleting tickets
-- Invalid email
-- Missing required fields
-- Invalid priority
-- Invalid status
-- Invalid ticket ID
-- Invalid routes and HTTP methods
+### Prerequisites
 
-## Running the project
+- Python 3.10 or later
+- MySQL Server
+- Git
 
-Install the required packages:
+### 1. Clone the repository
 
-pip install -r requirements.txt
+```bash
+git clone https://github.com/aashishpandat/SupportSystem.git
+cd SupportSystem
+```
 
-Set the database details in the `.env` file and then run:
+### 2. Create and activate a virtual environment
 
+**Windows CMD:**
+
+```cmd
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+### 3. Install dependencies
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+### 4. Configure environment variables
+
+Create a `.env` file in the project root and configure the database connection settings expected by the application.
+
+Do not commit `.env` or share database passwords publicly. Make sure MySQL is running and the configured database exists.
+
+### 5. Run the application
+
+```bash
 python run.py
+```
 
-The API will be available locally at:
+The local API will be available at:
 
-http://127.0.0.1:5000
+`http://127.0.0.1:5000`
 
-For the deployed version, use:
+Health check:
 
-https://supportsystem-production-7af0.up.railway.app/api/health
+`http://127.0.0.1:5000/api/health`
+
+## Running Tests
+
+Run the automated test suite from the project root:
+
+```bash
+python -m pytest -v
+```
+
+The current test suite contains **13 passing tests**, covering ticket validation, service behavior, and API routes.
+
+## API Testing with Postman
+
+Import or create requests for the endpoints listed above. Test successful requests as well as invalid email addresses, missing fields, invalid priorities or statuses, and ticket IDs that do not exist.
+
+## Author
+
+**Aashish Jha**
+
+- GitHub: https://github.com/aashishpandat
+- LinkedIn: https://www.linkedin.com/in/aashish-jha/
