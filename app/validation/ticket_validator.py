@@ -1,4 +1,5 @@
 import re
+from app.constants import TICKET_PRIORITIES, TICKET_STATUSES
 
 
 class TicketValidator:
@@ -9,8 +10,7 @@ class TicketValidator:
         "description"
     ]
 
-    ALLOWED_PRIORITIES = ["Low", "Medium", "High"]
-    ALLOWED_STATUSES = ["Open", "In Progress", "Closed"]
+
 
     @staticmethod
     def validate_ticket_data(data, current_priority="Medium"):
@@ -28,7 +28,7 @@ class TicketValidator:
             cleaned_data[field] = value.strip()
 
         email = cleaned_data["email"]
-        email_pattern = r"^[\w.-]+@[\w.-]+\.[A-Za-z]{2,}$"
+        email_pattern = r"^[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}$"
 
         if not re.match(email_pattern, email):
             return None, "Please provide a valid email address"
@@ -37,7 +37,7 @@ class TicketValidator:
 
         if (
             not isinstance(priority, str)
-            or priority not in TicketValidator.ALLOWED_PRIORITIES
+            or priority not in TICKET_PRIORITIES
         ):
             return None, "Priority must be Low, Medium, or High"
 
@@ -54,7 +54,7 @@ class TicketValidator:
 
         if (
             not isinstance(status, str)
-            or status not in TicketValidator.ALLOWED_STATUSES
+            or status not in TICKET_STATUSES
         ):
             return None, "Status must be Open, In Progress, or Closed"
 
